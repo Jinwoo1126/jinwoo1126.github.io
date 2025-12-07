@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>dev.log | 기술 블로그</title>
+  <meta name="description" content="개발과 기술에 대한 이야기를 기록합니다.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Pretendard:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg: #ffffff;
+      --color-text: #1a1a1a;
+      --color-text-muted: #666666;
+      --color-text-light: #999999;
+      --color-border: #e5e5e5;
+      --color-accent: #e85a4f;
+      --font-serif: 'Noto Serif KR', Georgia, serif;
+      --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      color: var(--color-text);
+      background: var(--color-bg);
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      z-index: 1001;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #e85a4f, #ff8c7a);
+      transform-origin: left;
+      will-change: width;
+    }
+
+    /* Header */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 24px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: transparent;
+      transition: background 0.4s ease, backdrop-filter 0.4s ease;
+    }
+
+    .header.scrolled {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+    }
+
+    .logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 700;
+      font-style: italic;
+      letter-spacing: -0.02em;
+    }
+
+    .menu-btn {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    .menu-btn span {
+      display: block;
+      width: 28px;
+      height: 2px;
+      background: var(--color-text);
+      transition: 0.3s;
+    }
+
+    /* Nav Menu */
+    .nav-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      opacity: 0;
+      visibility: hidden;
+      transition: 0.3s;
+      z-index: 1001;
+    }
+
+    .nav-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .nav-menu {
+      position: fixed;
+      top: 0;
+      right: -320px;
+      width: 320px;
+      height: 100%;
+      background: #fff;
+      padding: 80px 40px;
+      transition: right 0.4s ease;
+      z-index: 1002;
+    }
+
+    .nav-menu.active {
+      right: 0;
+    }
+
+    .nav-close {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      background: none;
+      border: none;
+      font-size: 2rem;
+      cursor: pointer;
+      color: var(--color-text);
+    }
+
+    .nav-menu ul {
+      list-style: none;
+    }
+
+    .nav-menu li {
+      margin-bottom: 24px;
+    }
+
+    .nav-menu a {
+      font-size: 1.2rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-menu a:hover {
+      color: var(--color-accent);
+    }
+
+    .nav-menu .nav-category {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--color-text-light);
+      margin-bottom: 16px;
+      margin-top: 40px;
+    }
+
+    /* Main Layout - Split View */
+    .article-hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    .hero-image-wrapper {
+      position: relative;
+      overflow: hidden;
+      will-change: opacity;
+      transform: translate3d(0, 0, 0);
+      backface-visibility: hidden;
+    }
+
+    .hero-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 120px 60px 60px;
+      position: relative;
+      will-change: transform, opacity;
+      transform: translate3d(0, 0, 0);
+      backface-visibility: hidden;
+    }
+
+    .category {
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--color-text-light);
+      margin-bottom: 24px;
+    }
+
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-weight: 900;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+      margin-bottom: 28px;
+    }
+
+    .hero-excerpt {
+      font-size: 1rem;
+      line-height: 1.9;
+      color: var(--color-text-muted);
+      margin-bottom: 24px;
+      max-width: 480px;
+    }
+
+    .hero-date {
+      font-size: 0.9rem;
+      color: var(--color-text-light);
+      letter-spacing: 0.05em;
+    }
+
+    .author {
+      position: absolute;
+      bottom: 40px;
+      right: 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .author-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      object-fit: cover;
+      filter: grayscale(100%);
+    }
+
+    .author-name {
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    /* Content Wrapper */
+    .content-wrapper {
+      background: var(--color-bg);
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Posts List Section */
+    .posts-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 40px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 48px;
+    }
+
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .view-all {
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+      transition: color 0.2s;
+    }
+
+    .view-all:hover {
+      color: var(--color-accent);
+    }
+
+    .posts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 48px;
+    }
+
+    .post-card {
+      display: block;
+    }
+
+    .post-card-image {
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      margin-bottom: 20px;
+      background: #f5f5f5;
+    }
+
+    .post-card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .post-card:hover .post-card-image img {
+      transform: scale(1.03);
+    }
+
+    .post-card-category {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-text-light);
+      margin-bottom: 12px;
+    }
+
+    .post-card-title {
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      font-weight: 700;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .post-card-excerpt {
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+      line-height: 1.7;
+      margin-bottom: 16px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .post-card-date {
+      font-size: 0.8rem;
+      color: var(--color-text-light);
+    }
+
+    /* Footer */
+    .footer {
+      background: #1a1a1a;
+      color: #fff;
+      padding: 60px 40px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 40px;
+    }
+
+    .footer-logo {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 700;
+      font-style: italic;
+      margin-bottom: 16px;
+    }
+
+    .footer-desc {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.6);
+      max-width: 300px;
+      line-height: 1.7;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 32px;
+    }
+
+    .footer-links a {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.7);
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: #fff;
+    }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 40px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* Mobile */
+    @media (max-width: 900px) {
+      .article-hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        position: relative;
+      }
+
+      .hero-image-wrapper {
+        height: 50vh;
+      }
+
+      .hero-content {
+        padding: 48px 24px 100px;
+      }
+
+      .author {
+        bottom: 24px;
+        right: 24px;
+      }
+
+      .header {
+        padding: 16px 24px;
+      }
+
+      .posts-section {
+        padding: 48px 24px;
+      }
+
+      .posts-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .footer {
+        padding: 48px 24px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Progress Bar -->
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <a href="/" class="logo">dev.log</a>
+    <button class="menu-btn" id="menuBtn" aria-label="메뉴">
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <!-- Navigation Overlay -->
+  <div class="nav-overlay" id="navOverlay"></div>
+  
+  <!-- Navigation Menu -->
+  <nav class="nav-menu" id="navMenu">
+    <button class="nav-close" id="navClose">&times;</button>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/about.html">About</a></li>
+    </ul>
+    <div class="nav-category">Categories</div>
+    <ul>
+      <li><a href="#">Tech</a></li>
+      <li><a href="#">Projects</a></li>
+      <li><a href="#">TIL</a></li>
+    </ul>
+    <div class="nav-category">Connect</div>
+    <ul>
+      <li><a href="https://github.com/yourusername" target="_blank">GitHub</a></li>
+      <li><a href="https://linkedin.com/in/yourusername" target="_blank">LinkedIn</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero - Latest Post -->
+  <section class="article-hero">
+    <div class="hero-image-wrapper">
+      <img 
+        src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&q=80" 
+        alt="Featured Post" 
+        class="hero-image"
+      >
+    </div>
+
+    <div class="hero-content">
+      <span class="category">Tech</span>
+      <h1 class="hero-title">
+        <a href="/posts/sample-post.html">개발자의 생산성을 높이는 VS Code 확장 프로그램 10선</a>
+      </h1>
+      <p class="hero-excerpt">
+        개발 환경을 구축할 때 가장 먼저 고민하게 되는 것이 바로 에디터 선택이다. 
+        수많은 선택지가 있지만, VS Code는 그 중에서도 가장 많은 개발자들이 선택하는 에디터로 자리잡았다...
+      </p>
+      <span class="hero-date">2024. 01. 15</span>
+
+      <div class="author">
+        <img 
+          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop" 
+          alt="Author" 
+          class="author-avatar"
+        >
+        <span class="author-name">Your Name</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <div class="content-wrapper">
+    <!-- Recent Posts -->
+    <section class="posts-section">
+      <div class="section-header">
+        <h2 class="section-title">최근 글</h2>
+        <a href="#" class="view-all">전체보기 →</a>
+      </div>
+
+      <div class="posts-grid">
+        <a href="/posts/sample-post.html" class="post-card">
+          <div class="post-card-image">
+            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=80" alt="">
+          </div>
+          <div class="post-card-category">Tech</div>
+          <h3 class="post-card-title">2024년 주목해야 할 프론트엔드 트렌드</h3>
+          <p class="post-card-excerpt">React Server Components부터 Edge Computing까지, 올해 프론트엔드 생태계를 이끌 기술들을 정리했다.</p>
+          <span class="post-card-date">2024. 01. 10</span>
+        </a>
+
+        <a href="/posts/sample-post.html" class="post-card">
+          <div class="post-card-image">
+            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&q=80" alt="">
+          </div>
+          <div class="post-card-category">Projects</div>
+          <h3 class="post-card-title">사이드 프로젝트 회고: 3개월간의 기록</h3>
+          <p class="post-card-excerpt">기획부터 배포까지, 첫 사이드 프로젝트를 완성하기까지의 과정을 기록했다.</p>
+          <span class="post-card-date">2024. 01. 05</span>
+        </a>
+
+        <a href="/posts/sample-post.html" class="post-card">
+          <div class="post-card-image">
+            <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80" alt="">
+          </div>
+          <div class="post-card-category">TIL</div>
+          <h3 class="post-card-title">TypeScript 제네릭 완벽 이해하기</h3>
+          <p class="post-card-excerpt">제네릭의 기본 개념부터 실전 활용 패턴까지 정리했다.</p>
+          <span class="post-card-date">2024. 01. 02</span>
+        </a>
+
+        <a href="/posts/sample-post.html" class="post-card">
+          <div class="post-card-image">
+            <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&q=80" alt="">
+          </div>
+          <div class="post-card-category">Tech</div>
+          <h3 class="post-card-title">Git 워크플로우 정리: 팀 협업을 위한 가이드</h3>
+          <p class="post-card-excerpt">효율적인 협업을 위한 Git 브랜치 전략과 커밋 컨벤션을 정리했다.</p>
+          <span class="post-card-date">2023. 12. 28</span>
+        </a>
+
+        <a href="/posts/sample-post.html" class="post-card">
+          <div class="post-card-image">
+            <img src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=600&q=80" alt="">
+          </div>
+          <div class="post-card-category">TIL</div>
+          <h3 class="post-card-title">Docker 기초: 개발 환경 구축하기</h3>
+          <p class="post-card-excerpt">Docker의 기본 개념과 개발 환경 구축 방법을 정리했다.</p>
+          <span class="post-card-date">2023. 12. 20</span>
+        </a>
+
+        <a href="/posts/sample-post.html" class="post-card">
+          <div class="post-card-image">
+            <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=600&q=80" alt="">
+          </div>
+          <div class="post-card-category">Projects</div>
+          <h3 class="post-card-title">나만의 CLI 도구 만들기</h3>
+          <p class="post-card-excerpt">Node.js로 간단한 CLI 도구를 만들어보며 배운 것들을 공유한다.</p>
+          <span class="post-card-date">2023. 12. 15</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-inner">
+        <div>
+          <div class="footer-logo">dev.log</div>
+          <p class="footer-desc">
+            개발과 기술에 대한 이야기를 기록합니다.<br>
+            배우고 성장하는 과정을 공유합니다.
+          </p>
+        </div>
+        <div class="footer-links">
+          <a href="/about.html">About</a>
+          <a href="https://github.com/yourusername" target="_blank">GitHub</a>
+          <a href="https://linkedin.com/in/yourusername" target="_blank">LinkedIn</a>
+          <a href="mailto:your@email.com">Contact</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        © 2024 dev.log. All Rights Reserved.
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Progress Bar & Scroll Effects
+    const heroContent = document.querySelector('.hero-content');
+    const heroImage = document.querySelector('.hero-image-wrapper');
+    const header = document.querySelector('.header');
+    const progressBar = document.getElementById('progressBar');
+    
+    let ticking = false;
+    let lastScrollY = 0;
+    
+    function updateOnScroll() {
+      const scrollY = lastScrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight - windowHeight;
+      
+      // Progress Bar
+      if (progressBar) {
+        const scrollPercent = (scrollY / documentHeight) * 100;
+        progressBar.style.width = scrollPercent + '%';
+      }
+      
+      // Hero fade effect
+      const fadeEnd = windowHeight * 0.7;
+      const fadeProgress = Math.min(Math.max(scrollY / fadeEnd, 0), 1);
+      const easeOutCubic = 1 - Math.pow(1 - fadeProgress, 3);
+      
+      if (heroContent) {
+        heroContent.style.transform = `translate3d(0, ${scrollY * 0.4}px, 0)`;
+        heroContent.style.opacity = 1 - easeOutCubic;
+      }
+      
+      if (heroImage) {
+        heroImage.style.opacity = 1 - (easeOutCubic * 0.6);
+      }
+      
+      if (header) {
+        header.classList.toggle('scrolled', scrollY > 100);
+      }
+      
+      ticking = false;
+    }
+    
+    function onScroll() {
+      lastScrollY = window.scrollY;
+      if (!ticking) {
+        requestAnimationFrame(updateOnScroll);
+        ticking = true;
+      }
+    }
+    
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // Navigation Menu
+    const menuBtn = document.getElementById('menuBtn');
+    const navMenu = document.getElementById('navMenu');
+    const navOverlay = document.getElementById('navOverlay');
+    const navClose = document.getElementById('navClose');
+
+    menuBtn.addEventListener('click', () => {
+      navMenu.classList.add('active');
+      navOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+
+    function closeNav() {
+      navMenu.classList.remove('active');
+      navOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    navClose.addEventListener('click', closeNav);
+    navOverlay.addEventListener('click', closeNav);
+  </script>
+</body>
+</html>
