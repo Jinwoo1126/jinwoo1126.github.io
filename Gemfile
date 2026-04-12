@@ -1,17 +1,12 @@
 source "https://rubygems.org"
 
-# Jekyll
-gem "jekyll", "~> 4.3"
+# GitHub Pages
+gem "github-pages", group: :jekyll_plugins
 
 # Plugins
 gem "jekyll-seo-tag"
 gem "jekyll-sitemap"
 gem "jekyll-feed"
-
-# GitHub Pages 호환
-group :jekyll_plugins do
-  gem "github-pages"
-end
 
 # Windows & JRuby
 platforms :mingw, :x64_mingw, :mswin, :jruby do

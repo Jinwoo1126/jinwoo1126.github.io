@@ -3,7 +3,7 @@
 # ============================================================
 title: dev.log
 description: 개발과 기술에 대한 이야기를 기록합니다.
-url: "https://yourusername.github.io"
+url: "https://jinwoo1126.github.io"
 baseurl: ""
 lang: ko
 
@@ -11,17 +11,17 @@ lang: ko
 # Author (기본 작성자 - _data/authors.yml에서 추가 가능)
 # ============================================================
 author:
-  name: Your Name
-  email: your@email.com
-  bio: "프론트엔드 개발자. 좋은 코드와 좋은 경험을 고민합니다."
+  name: Jinwoo Jang
+  email: wdfrty1234@gmail.com
+  bio: "AI 개발자. 좋은 코드와 좋은 경험을 고민합니다."
   avatar: /assets/images/profile.jpg
 
 # ============================================================
 # Social Links
 # ============================================================
 social:
-  github: yourusername
-  linkedin: yourusername
+  github: https://github.com/Jinwoo1126
+  linkedin: https://www.linkedin.com/in/jinwoo1126/
   twitter: 
   instagram: 
 
@@ -57,9 +57,15 @@ giscus:
 # ============================================================
 # Build Settings
 # ============================================================
+theme: null
 markdown: kramdown
 highlighter: rouge
 permalink: /posts/:title/
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-feed
 
 kramdown:
   input: GFM
