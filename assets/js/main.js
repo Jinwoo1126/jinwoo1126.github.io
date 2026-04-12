@@ -113,7 +113,7 @@ onScroll();
 
   var searchResults = document.createElement('div');
   searchResults.className = 'search-results';
-  searchInput.parentElement.appendChild(searchResults);
+  searchInput.parentElement.parentElement.insertBefore(searchResults, searchInput.parentElement.nextSibling);
 
   var posts = null;
   var debounceTimer = null;
