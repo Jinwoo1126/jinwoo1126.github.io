@@ -1,0 +1,29 @@
+{% comment %}
+  Giscus Comments Component
+  설정: _config.yml의 giscus 섹션
+  발급: https://giscus.app
+{% endcomment %}
+
+{% if site.giscus.repo_id != "" %}
+<script src="https://giscus.app/client.js"
+        data-repo="{{ site.giscus.repo }}"
+        data-repo-id="{{ site.giscus.repo_id }}"
+        data-category="{{ site.giscus.category }}"
+        data-category-id="{{ site.giscus.category_id }}"
+        data-mapping="{{ site.giscus.mapping | default: 'pathname' }}"
+        data-strict="0"
+        data-reactions-enabled="{{ site.giscus.reactions_enabled | default: '1' }}"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="{{ site.giscus.theme | default: 'light' }}"
+        data-lang="ko"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+{% else %}
+<div style="padding: 40px; text-align: center; color: #666; background: #f9f9f9; border-radius: 8px;">
+  <p>댓글 기능을 사용하려면 <a href="https://giscus.app" target="_blank" style="color: #e85a4f;">Giscus</a>를 설정해주세요.</p>
+  <p style="font-size: 0.9rem; margin-top: 8px;">_config.yml의 giscus 섹션을 채워주세요.</p>
+</div>
+{% endif %}

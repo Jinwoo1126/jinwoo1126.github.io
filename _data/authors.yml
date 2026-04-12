@@ -1,0 +1,17 @@
+# 작성자 정보
+# 글에서 author: nickname 으로 참조
+
+default:
+  name: Your Name
+  email: your@email.com
+  bio: "프론트엔드 개발자. 좋은 코드와 좋은 경험을 고민합니다."
+  avatar: /assets/images/profile.jpg
+  social:
+    github: yourusername
+    linkedin: yourusername
+
+# 추가 작성자 예시 (팀 블로그용)
+# guest:
+#   name: Guest Writer
+#   bio: "게스트 작성자입니다."
+#   avatar: /assets/images/guest.jpg

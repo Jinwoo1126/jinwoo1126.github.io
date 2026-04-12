@@ -1,0 +1,48 @@
+<!-- Navigation Overlay -->
+<div class="nav-overlay" id="navOverlay">
+  <button class="nav-close" id="navClose">×</button>
+  <div class="nav-content">
+    <!-- Search -->
+    <div class="nav-search">
+      <svg class="nav-search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+      </svg>
+      <input type="text" placeholder="검색어 입력" id="searchInput">
+    </div>
+
+    <!-- Main Categories (데이터 기반) -->
+    <div>
+      <ul class="nav-categories">
+        {% for item in site.data.navigation.main %}
+        <li>
+          <a href="{{ item.url | relative_url }}" {% if page.url == item.url %}class="active"{% endif %}>
+            {{ item.title }}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- Subcategories (첫 번째 카테고리의 서브) -->
+    <div>
+      <ul class="nav-subcategories">
+        {% for item in site.data.navigation.main[0].subcategories %}
+        <li><a href="{{ item.url | relative_url }}">{{ item.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- Footer Links -->
+    <div class="nav-footer">
+      {% for item in site.data.navigation.footer %}
+      <a href="{{ item.url | relative_url }}">{{ item.title }}</a>
+      {% unless forloop.last %}<span class="nav-footer-divider">|</span>{% endunless %}
+      {% endfor %}
+      
+      {% if site.social.github %}
+      <span class="nav-footer-divider">|</span>
+      <a href="https://github.com/{{ site.social.github }}" target="_blank">GitHub</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
