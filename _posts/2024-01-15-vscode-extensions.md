@@ -7,6 +7,7 @@ image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&q=80"
 series: "개발 환경 구축"
 ---
 
+
 개발 환경을 구축할 때 가장 먼저 고민하게 되는 것이 바로 에디터 선택이다. VS Code의 필수 확장 프로그램들을 소개한다.
 
 ## 왜 VS Code인가?
