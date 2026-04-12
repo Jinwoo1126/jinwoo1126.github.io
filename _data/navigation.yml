@@ -1,27 +1,27 @@
 # 메인 네비게이션
 main:
   - title: TECH
-    url: /categories/tech/
+    url: /categories/?name=tech
     subcategories:
       - title: 전체
-        url: /categories/tech/
+        url: /categories/?name=tech
       - title: Frontend
-        url: /tags/frontend/
+        url: /tags/?name=frontend
       - title: Backend
-        url: /tags/backend/
+        url: /tags/?name=backend
       - title: DevOps
-        url: /tags/devops/
+        url: /tags/?name=devops
       - title: CS
-        url: /tags/cs/
+        url: /tags/?name=cs
 
   - title: PROJECTS
-    url: /categories/projects/
+    url: /categories/?name=projects
 
   - title: TIL
-    url: /categories/til/
+    url: /categories/?name=til
 
   - title: LIFE
-    url: /categories/life/
+    url: /categories/?name=life
 
   - title: ABOUT
     url: /about/

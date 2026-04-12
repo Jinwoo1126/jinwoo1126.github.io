@@ -1,0 +1,93 @@
+---
+layout: default
+title: Categories
+permalink: /categories/
+---
+
+<section class="archive-section">
+  <h1 class="section-title" style="font-size: 2rem; margin-bottom: 16px;" id="category-page-title">Categories</h1>
+  <p style="color: var(--color-text-muted); margin-bottom: 32px;" id="category-page-desc">
+    카테고리를 선택하면 해당 글 목록을 볼 수 있습니다.
+  </p>
+
+  <!-- Category Filter Buttons -->
+  <div class="tags-cloud" id="categoryFilter">
+    <a href="{{ '/categories/' | relative_url }}" class="tag-cloud-item" data-category="all">
+      전체<span class="count">({{ site.posts.size }})</span>
+    </a>
+    {% assign categories = site.posts | map: "category" | uniq | sort %}
+    {% for cat in categories %}
+      {% assign cat_posts = site.posts | where: "category", cat %}
+      {% assign cat_info = site.data.categories[cat] %}
+      <a href="{{ '/categories/' | relative_url }}?name={{ cat }}" class="tag-cloud-item" data-category="{{ cat }}">
+        {{ cat_info.name | default: cat }}
+        <span class="count">({{ cat_posts.size }})</span>
+      </a>
+    {% endfor %}
+  </div>
+
+  <!-- All Posts (filtered by JS) -->
+  <div id="categoryPosts">
+    {% assign posts_by_category = site.posts | group_by: "category" %}
+    {% for group in posts_by_category %}
+      {% assign cat_info = site.data.categories[group.name] %}
+      <div class="category-group" data-category="{{ group.name }}">
+        <h2 class="archive-year" style="font-size: 1.3rem;">
+          {{ cat_info.name | default: group.name }}
+          <span style="font-size: 0.9rem; font-weight: 400; color: var(--color-text-light);">
+            ({{ group.items.size }})
+          </span>
+        </h2>
+        <ul class="archive-list">
+          {% for post in group.items %}
+          <li class="archive-item">
+            <span class="archive-date">{{ post.date | date: "%Y. %m. %d" }}</span>
+            <a href="{{ post.url | relative_url }}" class="archive-title">{{ post.title }}</a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<script>
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const name = params.get('name');
+  const groups = document.querySelectorAll('.category-group');
+  const buttons = document.querySelectorAll('#categoryFilter .tag-cloud-item');
+  const title = document.getElementById('category-page-title');
+  const desc = document.getElementById('category-page-desc');
+
+  if (name) {
+    // Filter posts
+    groups.forEach(function(g) {
+      g.style.display = g.dataset.category === name ? '' : 'none';
+    });
+    // Highlight active button
+    buttons.forEach(function(b) {
+      if (b.dataset.category === name) {
+        b.style.background = 'var(--color-accent)';
+        b.style.color = 'white';
+        title.textContent = b.textContent.replace(/\(.*\)/, '').trim();
+        desc.textContent = '총 ' + (b.querySelector('.count')?.textContent || '') + '개의 글이 있습니다.'.replace('(', '').replace(')', '');
+      }
+    });
+    // Update desc
+    var matched = document.querySelector('.category-group[data-category="' + name + '"]');
+    if (matched) {
+      var count = matched.querySelectorAll('.archive-item').length;
+      desc.textContent = '총 ' + count + '개의 글이 있습니다.';
+    }
+  } else {
+    // "전체" is active
+    buttons.forEach(function(b) {
+      if (b.dataset.category === 'all') {
+        b.style.background = 'var(--color-accent)';
+        b.style.color = 'white';
+      }
+    });
+  }
+})();
+</script>
