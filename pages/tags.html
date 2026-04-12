@@ -5,35 +5,81 @@ permalink: /tags/
 ---
 
 <section class="tags-section">
-  <h1 class="section-title" style="font-size: 2rem; margin-bottom: 16px;">Tags</h1>
-  <p style="color: var(--color-text-muted); margin-bottom: 32px;">
-    태그를 클릭하면 해당 글 목록으로 이동합니다.
+  <h1 class="section-title" style="font-size: 2rem; margin-bottom: 16px;" id="tag-page-title">Tags</h1>
+  <p style="color: var(--color-text-muted); margin-bottom: 32px;" id="tag-page-desc">
+    태그를 클릭하면 해당 글 목록을 볼 수 있습니다.
   </p>
 
   {% assign tags = site.tags | sort %}
-  
-  <div class="tags-cloud">
+
+  <!-- Tag Cloud -->
+  <div class="tags-cloud" id="tagFilter">
+    <a href="{{ '/tags/' | relative_url }}" class="tag-cloud-item" data-tag="all">
+      전체<span class="count">({{ site.posts.size }})</span>
+    </a>
     {% for tag in tags %}
-    <a href="#{{ tag[0] | slugify }}" class="tag-cloud-item">
+    <a href="{{ '/tags/' | relative_url }}?name={{ tag[0] | slugify }}" class="tag-cloud-item" data-tag="{{ tag[0] | slugify }}">
       #{{ tag[0] }}<span class="count">({{ tag[1].size }})</span>
     </a>
     {% endfor %}
   </div>
 
-  {% for tag in tags %}
-  <h2 id="{{ tag[0] | slugify }}" class="archive-year" style="font-size: 1.3rem;">
-    #{{ tag[0] }}
-    <span style="font-size: 0.9rem; font-weight: 400; color: var(--color-text-light);">
-      ({{ tag[1].size }})
-    </span>
-  </h2>
-  <ul class="archive-list">
-    {% for post in tag[1] %}
-    <li class="archive-item">
-      <span class="archive-date">{{ post.date | date: "%Y. %m. %d" }}</span>
-      <a href="{{ post.url | relative_url }}" class="archive-title">{{ post.title }}</a>
-    </li>
+  <!-- All Tag Groups (filtered by JS) -->
+  <div id="tagPosts">
+    {% for tag in tags %}
+    <div class="tag-group" data-tag="{{ tag[0] | slugify }}">
+      <h2 id="{{ tag[0] | slugify }}" class="archive-year" style="font-size: 1.3rem;">
+        #{{ tag[0] }}
+        <span style="font-size: 0.9rem; font-weight: 400; color: var(--color-text-light);">
+          ({{ tag[1].size }})
+        </span>
+      </h2>
+      <ul class="archive-list">
+        {% for post in tag[1] %}
+        <li class="archive-item">
+          <span class="archive-date">{{ post.date | date: "%Y. %m. %d" }}</span>
+          <a href="{{ post.url | relative_url }}" class="archive-title">{{ post.title }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
     {% endfor %}
-  </ul>
-  {% endfor %}
+  </div>
 </section>
+
+<script>
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var name = params.get('name');
+  var groups = document.querySelectorAll('.tag-group');
+  var buttons = document.querySelectorAll('#tagFilter .tag-cloud-item');
+  var title = document.getElementById('tag-page-title');
+  var desc = document.getElementById('tag-page-desc');
+
+  if (name) {
+    groups.forEach(function(g) {
+      g.style.display = g.dataset.tag === name ? '' : 'none';
+    });
+    buttons.forEach(function(b) {
+      if (b.dataset.tag === name) {
+        b.style.background = 'var(--color-accent)';
+        b.style.color = 'white';
+      }
+    });
+    var matched = document.querySelector('.tag-group[data-tag="' + name + '"]');
+    if (matched) {
+      var tagTitle = matched.querySelector('.archive-year').textContent.trim().replace(/\(.*\)/, '').trim();
+      title.textContent = tagTitle;
+      var count = matched.querySelectorAll('.archive-item').length;
+      desc.textContent = '총 ' + count + '개의 글이 있습니다.';
+    }
+  } else {
+    buttons.forEach(function(b) {
+      if (b.dataset.tag === 'all') {
+        b.style.background = 'var(--color-accent)';
+        b.style.color = 'white';
+      }
+    });
+  }
+})();
+</script>
