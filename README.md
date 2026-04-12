@@ -1,292 +1,174 @@
-# dev.log - Jekyll + Obsidian 기술 블로그
+# dev.log
 
-디에디트 스타일의 미니멀 기술 블로그 템플릿입니다.  
-**Obsidian**으로 글을 쓰고, **GitHub Actions**가 자동 배포합니다.
+A minimal, magazine-style tech blog built with Jekyll and hosted on GitHub Pages.
 
----
-
-## ✨ 특징
-
-- 📱 반응형 디자인 (디에디트 스타일)
-- ✍️ Obsidian으로 편하게 글쓰기
-- 🚀 GitHub Actions 자동 배포
-- 💬 Giscus 댓글 시스템
-- 📑 자동 목차(TOC) 생성
-- ⏱️ 읽기 시간 표시
-- 🏷️ 카테고리 & 태그 지원
-- 📚 시리즈 글 연결
+**Live:** [jinwoo1126.github.io](https://jinwoo1126.github.io)
 
 ---
 
-## 📁 프로젝트 구조
+## Features
+
+- **Dark Mode** — System preference detection + manual toggle with localStorage persistence
+- **Full-Text Search** — Client-side search powered by JSON index (title, excerpt, tags)
+- **Giscus Comments** — GitHub Discussions-based commenting system
+- **SEO Optimized** — `jekyll-seo-tag`, Open Graph, sitemap, RSS feed
+- **Google Analytics** — GA4 integration
+- **Responsive Design** — Mobile-first, optimized for all screen sizes
+- **Category & Tag Filtering** — Query parameter-based filtering, no extra files needed
+- **Series Support** — Link related posts together as a series
+- **Auto TOC** — Table of contents auto-generated from headings
+- **Reading Time** — Estimated reading time per post
+- **Code Highlighting** — Rouge with GitHub Dark theme + copy button
+- **Scroll Effects** — Progress bar, parallax hero, header blur on scroll
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Static Site Generator | Jekyll |
+| Hosting | GitHub Pages |
+| Styling | Custom CSS (Pretendard + Noto Serif KR) |
+| Comments | Giscus |
+| Analytics | Google Analytics (GA4) |
+| SEO | jekyll-seo-tag, jekyll-sitemap, jekyll-feed |
+
+---
+
+## Project Structure
 
 ```
-blog/
-├── _config.yml           # 사이트 설정 ⚙️
-├── _data/                # 데이터 파일
-│   ├── navigation.yml    # 메뉴 구조
-│   ├── authors.yml       # 작성자 정보
-│   └── categories.yml    # 카테고리 정의
-├── _drafts/              # 작성 중인 글 📝
-├── _posts/               # 발행된 글 ✅
-├── _layouts/             # 레이아웃 템플릿
-├── _includes/            # 재사용 컴포넌트
-│   └── components/       # 포스트 카드, 댓글 등
+├── _config.yml            # Site configuration
+├── _data/
+│   ├── navigation.yml     # Menu structure
+│   ├── authors.yml        # Author profiles
+│   └── categories.yml     # Category definitions
+├── _drafts/               # Unpublished posts
+├── _posts/                # Published posts
+├── _layouts/
+│   ├── default.html       # Base layout
+│   ├── post.html          # Post layout
+│   └── page.html          # Page layout
+├── _includes/
+│   ├── header.html        # Header with dark mode toggle
+│   ├── nav.html           # Full-screen navigation overlay
+│   ├── footer.html
+│   └── components/
+│       ├── post-card.html # Reusable post card
+│       └── giscus.html    # Comment component
 ├── assets/
-│   ├── css/style.css     # 스타일시트
-│   ├── js/main.js        # JavaScript
-│   └── images/           # 이미지
-├── pages/                # 정적 페이지
-├── templates/            # Obsidian 템플릿
-└── .github/workflows/    # 자동 배포 설정
+│   ├── css/style.css      # Stylesheet (dark mode included)
+│   ├── js/main.js         # Dark mode, search, scroll effects
+│   ├── search.json        # Search index (auto-generated)
+│   └── images/
+├── pages/
+│   ├── about.md
+│   ├── archive.html
+│   ├── categories.html
+│   └── tags.html
+├── 404.html               # Custom 404 page
+├── robots.txt
+└── Gemfile
 ```
 
 ---
 
-## 🚀 시작하기
+## Writing Posts
 
-### 1단계: GitHub 저장소 생성
-
-1. 이 폴더를 `username.github.io` 저장소에 업로드
-2. Settings → Pages → Source: **GitHub Actions** 선택
-
-### 2단계: 기본 설정 변경
-
-`_config.yml` 수정:
-
-```yaml
-title: 내 블로그 이름
-description: 블로그 설명
-url: "https://username.github.io"
-
-author:
-  name: 내 이름
-  email: my@email.com
-  bio: "자기소개"
-
-social:
-  github: username
-  linkedin: username
-```
-
-### 3단계: Giscus 댓글 설정 (선택)
-
-1. [giscus.app](https://giscus.app) 접속
-2. 저장소 연결 및 설정
-3. 발급받은 값을 `_config.yml`에 입력:
-
-```yaml
-giscus:
-  repo: "username/username.github.io"
-  repo_id: "발급받은_값"
-  category: "Comments"
-  category_id: "발급받은_값"
-```
-
----
-
-## ✏️ Obsidian 연동 설정
-
-### 방법 1: Obsidian Git 플러그인 (추천)
-
-1. **Obsidian 설치** 후 이 폴더를 Vault로 열기
-2. **Community Plugins**에서 `Obsidian Git` 설치
-3. 플러그인 설정:
-   - Auto pull interval: `5` (분)
-   - Auto push interval: `5` (분)
-   - Pull on startup: ✅
-   - Push on backup: ✅
-
-4. **Templater 플러그인** 설치 (선택):
-   - Template folder: `templates`
-   - 단축키로 새 글 생성
-
-### 방법 2: 수동 Git
-
-```bash
-# 글 작성 후
-git add .
-git commit -m "새 글: 제목"
-git push
-```
-
----
-
-## 📝 글 작성 워크플로우
-
-### 새 글 작성
-
-1. `_drafts/` 폴더에 `.md` 파일 생성
-2. 템플릿 사용 또는 직접 작성:
+Create a markdown file in `_posts/` with the naming convention `YYYY-MM-DD-title.md`:
 
 ```markdown
 ---
-title: "글 제목"
+title: "Post Title"
 date: 2024-01-20
 category: tech
-tags: [태그1, 태그2]
-image: "이미지 URL"
+tags: [python, ai]
+image: "https://example.com/image.jpg"
+series: "Series Name"       # optional
+toc: true                   # optional (default: true)
+comments: true              # optional (default: true)
 ---
 
-본문 내용...
+Your content here...
 ```
 
-3. 작성 완료 → `_posts/` 폴더로 이동
-4. 파일명 형식: `YYYY-MM-DD-제목.md`
+### Categories
 
-### 카테고리 종류
-
-| 카테고리 | 용도 |
-|----------|------|
-| `tech` | 기술 글 |
-| `projects` | 프로젝트 회고 |
+| Category | Description |
+|----------|-------------|
+| `tech` | Technical articles |
+| `projects` | Project retrospectives |
 | `til` | Today I Learned |
-| `life` | 일상 |
+| `life` | Life & misc |
 
-### Front Matter 옵션
+Adding a new category or tag requires **no extra files** — just use it in the post front matter and it will appear automatically.
+
+---
+
+## Local Development
+
+```bash
+# Install dependencies
+bundle install
+
+# Run local server (with drafts)
+bundle exec jekyll serve --drafts
+
+# Open http://localhost:4000
+```
+
+---
+
+## Customization
+
+### Colors & Fonts
+
+Edit CSS variables in `assets/css/style.css`:
+
+```css
+:root {
+  --color-accent: #e85a4f;
+  --font-serif: 'Noto Serif KR', Georgia, serif;
+  --font-sans: 'Pretendard', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+```
+
+### Feature Toggles
+
+In `_config.yml`:
 
 ```yaml
----
-title: "글 제목"           # 필수
-date: 2024-01-20          # 필수
-category: tech            # tech, projects, til, life
-tags: [태그1, 태그2]       # 태그 목록
-image: "URL"              # 대표 이미지
-series: "시리즈명"         # 시리즈 글 연결
-toc: true                 # 목차 표시 (기본: true)
-comments: true            # 댓글 표시 (기본: true)
-author: default           # 작성자 (_data/authors.yml)
----
+features:
+  comments: true
+  toc: true
+  reading_time: true
+  related_posts: true
 ```
 
----
+### Navigation
 
-## 🖼️ 이미지 관리
-
-### 방법 1: 외부 URL (간편)
-
-```markdown
-![설명](https://images.unsplash.com/photo-xxx)
-```
-
-### 방법 2: 로컬 이미지
-
-1. `assets/images/posts/2024-01/` 폴더에 저장
-2. 마크다운에서 참조:
-
-```markdown
-![설명](/assets/images/posts/2024-01/image.jpg)
-```
-
-### Obsidian 이미지 설정 (추천)
-
-Settings → Files & Links:
-- Default location for new attachments: `In subfolder under current folder`
-- Subfolder name: `images`
-
----
-
-## 🎨 커스터마이징
-
-### 폰트 변경
-
-`assets/css/style.css` 상단:
-
-```css
-:root {
-  --font-serif: 'Noto Serif KR', serif;    /* 제목 */
-  --font-sans: 'Pretendard', sans-serif;   /* 본문 */
-  --font-mono: 'JetBrains Mono', mono;     /* 코드 */
-}
-```
-
-### 색상 변경
-
-```css
-:root {
-  --color-accent: #e85a4f;      /* 강조색 */
-  --color-text: #1a1a1a;        /* 본문 */
-  --color-text-muted: #666;     /* 보조 */
-}
-```
-
-### 메뉴 수정
-
-`_data/navigation.yml`:
+Edit `_data/navigation.yml`. Links use query parameters for filtering:
 
 ```yaml
 main:
   - title: TECH
-    url: /categories/tech/
-    subcategories:
-      - title: Frontend
-        url: /tags/frontend/
+    url: /categories/?name=tech
 ```
 
 ---
 
-## 🔧 로컬 개발 (선택)
+## Remaining TODOs
 
-```bash
-# Ruby 설치 필요
-gem install bundler jekyll
-
-# 의존성 설치
-bundle install
-
-# 로컬 서버 (drafts 포함)
-bundle exec jekyll serve --drafts
-
-# http://localhost:4000
-```
+- [ ] Replace placeholder profile image (`assets/images/profile.jpg`)
+- [ ] Remove sample posts when ready to publish real content
+- [ ] Submit sitemap to Google Search Console
+- [ ] Submit sitemap to Naver Search Advisor
+- [ ] Set up custom domain (optional)
 
 ---
 
-## 📂 기능 토글
+## License
 
-`_config.yml`에서 기능 ON/OFF:
-
-```yaml
-features:
-  comments: true        # 댓글
-  toc: true             # 목차
-  reading_time: true    # 읽기 시간
-  related_posts: true   # 관련 글
-```
-
----
-
-## ❓ FAQ
-
-### Q: 글이 안 보여요
-- 파일명이 `YYYY-MM-DD-제목.md` 형식인지 확인
-- 날짜가 미래가 아닌지 확인
-- `_posts/` 폴더에 있는지 확인
-
-### Q: 이미지가 안 나와요
-- 경로 앞에 `/` 추가: `/assets/images/...`
-- 파일명에 한글/공백 없는지 확인
-
-### Q: 배포가 안 돼요
-- Actions 탭에서 에러 확인
-- `_config.yml` 문법 오류 확인
-
----
-
-## 🛠️ 확장 가능한 기능들
-
-- [ ] 검색 (Pagefind)
-- [ ] 다크 모드
-- [ ] 뉴스레터 구독
-- [ ] 조회수 통계
-- [ ] 다국어 지원
-
----
-
-## 📄 라이센스
-
-자유롭게 사용하세요!
-
----
-
-**Happy Blogging! 🎉**
+MIT
