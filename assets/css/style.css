@@ -1235,4 +1235,222 @@ img {
   .article-body-section {
     padding: 48px 20px;
   }
+
+  .header-actions {
+    gap: 8px;
+  }
+
+  .theme-toggle {
+    padding: 6px;
+  }
+}
+
+/* ===== HEADER ACTIONS ===== */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+.theme-toggle:hover {
+  color: var(--color-accent);
+}
+
+[data-theme="light"] .icon-moon { display: none; }
+[data-theme="dark"] .icon-sun { display: none; }
+[data-theme="light"] .icon-sun { display: block; }
+[data-theme="dark"] .icon-moon { display: block; }
+
+/* ===== SEARCH RESULTS ===== */
+.search-results {
+  display: none;
+  margin-top: 16px;
+}
+
+.search-result-item {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-border);
+  transition: color 0.2s;
+}
+
+.search-result-item:hover {
+  color: var(--color-accent);
+}
+
+.search-result-category {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-light);
+  flex-shrink: 0;
+  width: 60px;
+}
+
+.search-result-title {
+  flex: 1;
+  font-weight: 500;
+}
+
+.search-result-date {
+  font-size: 0.8rem;
+  color: var(--color-text-light);
+  flex-shrink: 0;
+}
+
+.search-no-result {
+  padding: 24px 0;
+  color: var(--color-text-light);
+  font-size: 0.95rem;
+}
+
+/* ===== COPY CODE BUTTON ===== */
+.copy-code-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-family: var(--font-sans);
+  background: #374151;
+  color: #d1d5db;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s, background 0.2s;
+}
+
+.copy-code-btn:hover {
+  background: #4b5563;
+}
+
+/* ===== SYNTAX HIGHLIGHTING (Rouge - GitHub Dark) ===== */
+.highlight { background: var(--color-code-bg); border-radius: 12px; }
+.highlight .c, .highlight .cm, .highlight .c1, .highlight .cs { color: #6a9955; font-style: italic; }
+.highlight .k, .highlight .kd, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kt { color: #569cd6; }
+.highlight .s, .highlight .sb, .highlight .sc, .highlight .sd, .highlight .s2, .highlight .sh, .highlight .s1 { color: #ce9178; }
+.highlight .si { color: #9cdcfe; }
+.highlight .sx { color: #ce9178; }
+.highlight .sr { color: #d16969; }
+.highlight .ss { color: #ce9178; }
+.highlight .na { color: #9cdcfe; }
+.highlight .nb { color: #4ec9b0; }
+.highlight .nc { color: #4ec9b0; }
+.highlight .nd { color: #dcdcaa; }
+.highlight .ni { color: #d4d4d4; }
+.highlight .ne { color: #4ec9b0; }
+.highlight .nf, .highlight .fm { color: #dcdcaa; }
+.highlight .nl { color: #9cdcfe; }
+.highlight .nn { color: #4ec9b0; }
+.highlight .no { color: #4fc1ff; }
+.highlight .nv, .highlight .vi, .highlight .vc, .highlight .vg, .highlight .vm { color: #9cdcfe; }
+.highlight .o, .highlight .ow { color: #d4d4d4; }
+.highlight .p { color: #d4d4d4; }
+.highlight .m, .highlight .mf, .highlight .mh, .highlight .mi, .highlight .mo, .highlight .il { color: #b5cea8; }
+.highlight .w { color: #d4d4d4; }
+.highlight .err { color: #f44747; }
+
+/* ===== DARK MODE ===== */
+[data-theme="dark"] {
+  --color-bg: #0d1117;
+  --color-text: #e6edf3;
+  --color-text-muted: #8b949e;
+  --color-text-light: #6e7681;
+  --color-border: #30363d;
+  --color-accent: #ff6b5e;
+  --color-accent-light: #ff8c7a;
+  --color-code-bg: #161b22;
+}
+
+[data-theme="dark"] .header.scrolled {
+  background: rgba(13, 17, 23, 0.95);
+}
+
+[data-theme="dark"] .nav-overlay {
+  background: rgba(13, 17, 23, 0.98);
+}
+
+[data-theme="dark"] .nav-search input {
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .footer {
+  background: #010409;
+}
+
+[data-theme="dark"] .post-card-image {
+  background: #161b22;
+}
+
+[data-theme="dark"] .article-body code {
+  background: #1c2128;
+}
+
+[data-theme="dark"] .tag,
+[data-theme="dark"] .skill-tag,
+[data-theme="dark"] .tag-cloud-item {
+  background: #1c2128;
+}
+
+[data-theme="dark"] .author-box {
+  background: #161b22;
+}
+
+[data-theme="dark"] .related-section {
+  background: #161b22;
+}
+
+[data-theme="dark"] .series-box {
+  background: #161b22;
+  border-color: var(--color-border);
+}
+
+[data-theme="dark"] .copy-code-btn {
+  background: #30363d;
+  color: #8b949e;
+}
+
+[data-theme="dark"] img {
+  opacity: 0.9;
+}
+
+/* ===== MOBILE TOUCH IMPROVEMENTS ===== */
+@media (max-width: 900px) {
+  .search-result-item {
+    flex-wrap: wrap;
+    gap: 4px 12px;
+  }
+
+  .search-result-category {
+    width: auto;
+  }
+
+  .search-result-date {
+    width: 100%;
+    margin-top: 2px;
+  }
+
+  .archive-item {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .archive-date {
+    width: auto;
+  }
 }
