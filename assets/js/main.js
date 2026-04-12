@@ -24,6 +24,15 @@ function getTheme() {
 function setTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
   localStorage.setItem('theme', theme);
+
+  // Sync Giscus comment theme
+  var giscusFrame = document.querySelector('iframe.giscus-frame');
+  if (giscusFrame) {
+    giscusFrame.contentWindow.postMessage(
+      { giscus: { setConfig: { theme: theme === 'dark' ? 'dark' : 'light' } } },
+      'https://giscus.app'
+    );
+  }
 }
 
 if (themeToggle) {

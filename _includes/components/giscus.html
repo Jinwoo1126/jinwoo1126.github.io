@@ -5,21 +5,30 @@
 {% endcomment %}
 
 {% if site.giscus.repo_id != "" %}
-<script src="https://giscus.app/client.js"
-        data-repo="{{ site.giscus.repo }}"
-        data-repo-id="{{ site.giscus.repo_id }}"
-        data-category="{{ site.giscus.category }}"
-        data-category-id="{{ site.giscus.category_id }}"
-        data-mapping="{{ site.giscus.mapping | default: 'pathname' }}"
-        data-strict="0"
-        data-reactions-enabled="{{ site.giscus.reactions_enabled | default: '1' }}"
-        data-emit-metadata="0"
-        data-input-position="top"
-        data-theme="{{ site.giscus.theme | default: 'light' }}"
-        data-lang="ko"
-        data-loading="lazy"
-        crossorigin="anonymous"
-        async>
+<script>
+(function() {
+  var theme = localStorage.getItem('theme') ||
+    (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  var giscusTheme = theme === 'dark' ? 'dark' : 'light';
+
+  var script = document.createElement('script');
+  script.src = 'https://giscus.app/client.js';
+  script.setAttribute('data-repo', '{{ site.giscus.repo }}');
+  script.setAttribute('data-repo-id', '{{ site.giscus.repo_id }}');
+  script.setAttribute('data-category', '{{ site.giscus.category }}');
+  script.setAttribute('data-category-id', '{{ site.giscus.category_id }}');
+  script.setAttribute('data-mapping', '{{ site.giscus.mapping | default: "pathname" }}');
+  script.setAttribute('data-strict', '0');
+  script.setAttribute('data-reactions-enabled', '{{ site.giscus.reactions_enabled | default: "1" }}');
+  script.setAttribute('data-emit-metadata', '0');
+  script.setAttribute('data-input-position', 'top');
+  script.setAttribute('data-theme', giscusTheme);
+  script.setAttribute('data-lang', 'ko');
+  script.setAttribute('data-loading', 'lazy');
+  script.setAttribute('crossorigin', 'anonymous');
+  script.async = true;
+  document.currentScript.parentElement.appendChild(script);
+})();
 </script>
 {% else %}
 <div style="padding: 40px; text-align: center; color: #666; background: #f9f9f9; border-radius: 8px;">
