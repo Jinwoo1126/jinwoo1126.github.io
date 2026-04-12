@@ -3,56 +3,49 @@ layout: default
 title: Home
 ---
 
-{% assign latest_post = site.posts.first %}
-
-{% if latest_post %}
-<!-- Hero - Latest Post -->
-<section class="article-hero">
-  <div class="hero-image-wrapper">
-    {% if latest_post.image %}
-    <img src="{{ latest_post.image }}" alt="{{ latest_post.title }}" class="hero-image">
-    {% else %}
-    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&q=80" alt="{{ latest_post.title }}" class="hero-image">
-    {% endif %}
-  </div>
-
-  <div class="hero-content">
-    <span class="category">{{ latest_post.category | default: 'Tech' }}</span>
-    <h1 class="hero-title">
-      <a href="{{ latest_post.url | relative_url }}">{{ latest_post.title }}</a>
-    </h1>
-    <p class="hero-excerpt">{{ latest_post.excerpt | strip_html | truncate: 150 }}</p>
-    
-    <div class="post-meta">
-      <span class="hero-date">{{ latest_post.date | date: "%Y. %m. %d" }}</span>
-      {% if site.features.reading_time %}
-      <span class="post-meta-divider"></span>
-      <span class="reading-time">
-        {% assign words = latest_post.content | number_of_words %}
-        {% assign minutes = words | divided_by: 200 %}
-        {% if minutes < 1 %}1{% else %}{{ minutes }}{% endif %}분
-      </span>
-      {% endif %}
-    </div>
-
-    {% assign author = site.data.authors[latest_post.author] | default: site.data.authors.default %}
-    <div class="author">
-      <img 
-        src="{{ author.avatar | default: '/assets/images/profile.jpg' }}" 
-        alt="{{ author.name }}" 
-        class="author-avatar"
-        onerror="this.src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop'"
-      >
-      <span class="author-name">{{ author.name }}</span>
-    </div>
+<!-- Landing Hero -->
+<section class="landing-hero">
+  <div class="landing-content">
+    <p class="landing-label">{{ site.author.name }}'s Blog</p>
+    <h1 class="landing-title">{{ site.title }}</h1>
+    <p class="landing-desc">{{ site.description }}</p>
+    <a href="#posts" class="landing-scroll">
+      <span>최근 글 보기</span>
+      <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+      </svg>
+    </a>
   </div>
 </section>
-{% endif %}
 
-<!-- Content -->
-<div class="content-wrapper">
-  <!-- Recent Posts -->
+<!-- Featured Post -->
+{% assign latest_post = site.posts.first %}
+{% if latest_post %}
+<div class="content-wrapper" id="posts">
   <section class="posts-section">
+    <div class="section-header">
+      <h2 class="section-title">Featured</h2>
+    </div>
+
+    <a href="{{ latest_post.url | relative_url }}" class="featured-post">
+      <div class="featured-image">
+        {% if latest_post.image %}
+        <img src="{{ latest_post.image }}" alt="{{ latest_post.title }}" loading="lazy">
+        {% else %}
+        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&q=80" alt="{{ latest_post.title }}" loading="lazy">
+        {% endif %}
+      </div>
+      <div class="featured-info">
+        <span class="post-card-category">{{ latest_post.category | default: 'Tech' }}</span>
+        <h3 class="featured-title">{{ latest_post.title }}</h3>
+        <p class="featured-excerpt">{{ latest_post.excerpt | strip_html | truncate: 200 }}</p>
+        <span class="post-card-date">{{ latest_post.date | date: "%Y. %m. %d" }}</span>
+      </div>
+    </a>
+  </section>
+
+  <!-- Recent Posts -->
+  <section class="posts-section" style="padding-top: 0;">
     <div class="section-header">
       <h2 class="section-title">최근 글</h2>
       <a href="{{ '/archive' | relative_url }}" class="view-all">전체보기 →</a>
@@ -65,39 +58,4 @@ title: Home
     </div>
   </section>
 </div>
-
-<script>
-  // Hero scroll effect
-  const heroContent = document.querySelector('.hero-content');
-  const heroImage = document.querySelector('.hero-image-wrapper');
-  
-  if (heroContent && heroImage) {
-    let heroTicking = false;
-    let heroLastScrollY = 0;
-    
-    function updateHeroOnScroll() {
-      const scrollY = heroLastScrollY;
-      const windowHeight = window.innerHeight;
-      
-      const fadeEnd = windowHeight * 0.7;
-      const fadeProgress = Math.min(Math.max(scrollY / fadeEnd, 0), 1);
-      const easeOutCubic = 1 - Math.pow(1 - fadeProgress, 3);
-      
-      heroContent.style.transform = `translate3d(0, ${scrollY * 0.4}px, 0)`;
-      heroContent.style.opacity = 1 - easeOutCubic;
-      heroImage.style.opacity = 1 - (easeOutCubic * 0.6);
-      
-      heroTicking = false;
-    }
-    
-    function onHeroScroll() {
-      heroLastScrollY = window.scrollY;
-      if (!heroTicking) {
-        requestAnimationFrame(updateHeroOnScroll);
-        heroTicking = true;
-      }
-    }
-    
-    window.addEventListener('scroll', onHeroScroll, { passive: true });
-  }
-</script>
+{% endif %}
