@@ -11,7 +11,7 @@ permalink: /about/
 
   <div class="about-content">
     <span class="about-label">About</span>
-    <h1 class="about-title">안녕하세요,<br>개발자 {{ site.author.name }}입니다.</h1>
+    <h1 class="about-title">안녕하세요,<br>{{ site.author.name }}입니다.</h1>
     <p class="about-intro">{{ site.author.bio }}</p>
     <div class="about-links">
       {% if site.social.github %}
@@ -31,33 +31,15 @@ permalink: /about/
     <div class="detail-content">
       <p>주로 사용하는 기술 스택입니다.</p>
       <div class="skill-list">
-        <span class="skill-tag">JavaScript</span>
-        <span class="skill-tag">TypeScript</span>
-        <span class="skill-tag">React</span>
-        <span class="skill-tag">Next.js</span>
-        <span class="skill-tag">Vue.js</span>
-        <span class="skill-tag">Node.js</span>
         <span class="skill-tag">Python</span>
-        <span class="skill-tag">Git</span>
+        <span class="skill-tag">PyTorch</span>
+        <span class="skill-tag">TensorFlow</span>
+        <span class="skill-tag">LangChain</span>
+        <span class="skill-tag">HuggingFace</span>
+        <span class="skill-tag">FastAPI</span>
         <span class="skill-tag">Docker</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="detail-section">
-    <h2 class="detail-title">Experience</h2>
-    <div class="detail-content">
-      <div class="timeline">
-        <div class="timeline-item">
-          <div class="timeline-date">2023 - Present</div>
-          <div class="timeline-title">Frontend Developer @ Company Name</div>
-          <div class="timeline-desc">프론트엔드 개발 및 UI/UX 개선 작업</div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-date">2021 - 2023</div>
-          <div class="timeline-title">Junior Developer @ Previous Company</div>
-          <div class="timeline-desc">웹 서비스 개발 및 유지보수</div>
-        </div>
+        <span class="skill-tag">Git</span>
+        <span class="skill-tag">SQL</span>
       </div>
     </div>
   </div>
@@ -67,7 +49,7 @@ permalink: /about/
     <div class="detail-content">
       <p>
         이 블로그는 개발하면서 배운 것들을 기록하고 공유하기 위해 만들었습니다.
-        주로 프론트엔드 개발, 새로운 기술 트렌드, 사이드 프로젝트 경험 등을 다룹니다.
+        AI/ML, 개발 도구, 사이드 프로젝트 경험 등을 다룹니다.
       </p>
       <p>
         틀린 내용이나 피드백이 있다면 언제든 연락 주세요!
