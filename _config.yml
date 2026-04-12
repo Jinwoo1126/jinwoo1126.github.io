@@ -20,10 +20,10 @@ author:
 # Social Links
 # ============================================================
 social:
-  github: https://github.com/Jinwoo1126
-  linkedin: https://www.linkedin.com/in/jinwoo1126/
-  twitter: 
-  instagram: 
+  github: Jinwoo1126
+  linkedin: jinwoo1126
+  twitter:
+  instagram:
 
 # ============================================================
 # Blog Settings
@@ -46,7 +46,7 @@ features:
 # Giscus Comments (https://giscus.app 에서 설정)
 # ============================================================
 giscus:
-  repo: "yourusername/yourusername.github.io"
+  repo: "Jinwoo1126/jinwoo1126.github.io"
   repo_id: ""             # giscus.app에서 발급
   category: "Comments"
   category_id: ""         # giscus.app에서 발급
