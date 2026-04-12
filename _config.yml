@@ -47,12 +47,12 @@ features:
 # ============================================================
 giscus:
   repo: "Jinwoo1126/jinwoo1126.github.io"
-  repo_id: ""             # giscus.app에서 발급
-  category: "Comments"
-  category_id: ""         # giscus.app에서 발급
+  repo_id: "R_kgDOQkGqrg"
+  category: "Q&A"
+  category_id: "DIC_kwDOQkGqrs4C6q_h"
   mapping: "pathname"
   reactions_enabled: "1"
-  theme: "light"
+  theme: "preferred_color_scheme"
 
 # ============================================================
 # Build Settings
