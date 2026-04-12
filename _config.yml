@@ -113,6 +113,7 @@ defaults:
 # Exclude from build
 # ============================================================
 exclude:
+  - _scripts
   - Gemfile
   - Gemfile.lock
   - README.md

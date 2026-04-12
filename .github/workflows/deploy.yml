@@ -28,7 +28,9 @@ jobs:
           find _posts _drafts -name "*.md" -exec sed -i 's|!\[\([^]]*\)](\.\./\.\./assets/|![\1](/assets/|g' {} + 2>/dev/null || true
           # assets/images/... → /assets/images/... (no leading /)
           find _posts _drafts -name "*.md" -exec sed -i 's|!\[\([^]]*\)](assets/|![\1](/assets/|g' {} + 2>/dev/null || true
-          # Already absolute paths (/assets/...) are left untouched
+
+      - name: Convert Obsidian syntax
+        run: python3 _scripts/obsidian-compat.py
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

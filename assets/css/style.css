@@ -1487,6 +1487,91 @@ img {
   background: #4b5563;
 }
 
+/* ===== HIGHLIGHT (Obsidian ==text==) ===== */
+mark {
+  background: #fff3b0;
+  color: inherit;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+[data-theme="dark"] mark {
+  background: #534b1e;
+}
+
+/* ===== CALLOUTS (Obsidian > [!type]) ===== */
+.callout {
+  border-left: 4px solid;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 1.5rem 0;
+}
+
+.callout-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+}
+
+.callout-content {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+.callout-content p {
+  margin-bottom: 0.5rem;
+}
+
+.callout-content p:last-child {
+  margin-bottom: 0;
+}
+
+.callout-blue {
+  border-color: #3b82f6;
+  background: #eff6ff;
+}
+
+.callout-blue .callout-title { color: #1d4ed8; }
+
+.callout-green {
+  border-color: #10b981;
+  background: #ecfdf5;
+}
+
+.callout-green .callout-title { color: #047857; }
+
+.callout-yellow {
+  border-color: #f59e0b;
+  background: #fffbeb;
+}
+
+.callout-yellow .callout-title { color: #b45309; }
+
+.callout-red {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+
+.callout-red .callout-title { color: #b91c1c; }
+
+.callout-gray {
+  border-color: #6b7280;
+  background: #f9fafb;
+}
+
+.callout-gray .callout-title { color: #374151; }
+
+[data-theme="dark"] .callout-blue { background: #172554; }
+[data-theme="dark"] .callout-blue .callout-title { color: #60a5fa; }
+[data-theme="dark"] .callout-green { background: #052e16; }
+[data-theme="dark"] .callout-green .callout-title { color: #34d399; }
+[data-theme="dark"] .callout-yellow { background: #422006; }
+[data-theme="dark"] .callout-yellow .callout-title { color: #fbbf24; }
+[data-theme="dark"] .callout-red { background: #450a0a; }
+[data-theme="dark"] .callout-red .callout-title { color: #f87171; }
+[data-theme="dark"] .callout-gray { background: #1c2128; }
+[data-theme="dark"] .callout-gray .callout-title { color: #9ca3af; }
+
 /* ===== SYNTAX HIGHLIGHTING (Rouge - GitHub Dark) ===== */
 .highlight { background: var(--color-code-bg); border-radius: 12px; }
 .highlight .c, .highlight .cm, .highlight .c1, .highlight .cs { color: #6a9955; font-style: italic; }
