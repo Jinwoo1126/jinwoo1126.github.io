@@ -1,0 +1,20 @@
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">{{ site.title }}</div>
+      <p class="footer-desc">{{ site.description }}</p>
+    </div>
+    <div class="footer-links">
+      {% for item in site.data.navigation.footer %}
+      <a href="{{ item.url | relative_url }}">{{ item.title }}</a>
+      {% endfor %}
+      {% if site.social.github %}
+      <a href="https://github.com/{{ site.social.github }}" target="_blank">GitHub</a>
+      {% endif %}
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © {{ 'now' | date: "%Y" }} {{ site.title }}. All Rights Reserved.
+  </div>
+</footer>

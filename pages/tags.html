@@ -1,0 +1,39 @@
+---
+layout: default
+title: Tags
+permalink: /tags/
+---
+
+<section class="tags-section">
+  <h1 class="section-title" style="font-size: 2rem; margin-bottom: 16px;">Tags</h1>
+  <p style="color: var(--color-text-muted); margin-bottom: 32px;">
+    태그를 클릭하면 해당 글 목록으로 이동합니다.
+  </p>
+
+  {% assign tags = site.tags | sort %}
+  
+  <div class="tags-cloud">
+    {% for tag in tags %}
+    <a href="#{{ tag[0] | slugify }}" class="tag-cloud-item">
+      #{{ tag[0] }}<span class="count">({{ tag[1].size }})</span>
+    </a>
+    {% endfor %}
+  </div>
+
+  {% for tag in tags %}
+  <h2 id="{{ tag[0] | slugify }}" class="archive-year" style="font-size: 1.3rem;">
+    #{{ tag[0] }}
+    <span style="font-size: 0.9rem; font-weight: 400; color: var(--color-text-light);">
+      ({{ tag[1].size }})
+    </span>
+  </h2>
+  <ul class="archive-list">
+    {% for post in tag[1] %}
+    <li class="archive-item">
+      <span class="archive-date">{{ post.date | date: "%Y. %m. %d" }}</span>
+      <a href="{{ post.url | relative_url }}" class="archive-title">{{ post.title }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% endfor %}
+</section>

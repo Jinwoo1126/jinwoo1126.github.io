@@ -1,0 +1,18 @@
+{% comment %}
+  Post Card Component
+  Usage: {% include components/post-card.html post=post %}
+{% endcomment %}
+
+<a href="{{ include.post.url | relative_url }}" class="post-card">
+  <div class="post-card-image">
+    {% if include.post.image %}
+    <img src="{{ include.post.image }}" alt="{{ include.post.title }}" loading="lazy">
+    {% else %}
+    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=80" alt="{{ include.post.title }}" loading="lazy">
+    {% endif %}
+  </div>
+  <div class="post-card-category">{{ include.post.category | default: 'Tech' }}</div>
+  <h3 class="post-card-title">{{ include.post.title }}</h3>
+  <p class="post-card-excerpt">{{ include.post.excerpt | strip_html | truncate: 100 }}</p>
+  <span class="post-card-date">{{ include.post.date | date: "%Y. %m. %d" }}</span>
+</a>

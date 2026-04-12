@@ -1,0 +1,27 @@
+---
+layout: default
+title: Archive
+permalink: /archive/
+---
+
+<section class="archive-section">
+  <h1 class="section-title" style="font-size: 2rem; margin-bottom: 16px;">Archive</h1>
+  <p style="color: var(--color-text-muted); margin-bottom: 48px;">
+    총 {{ site.posts.size }}개의 글이 있습니다.
+  </p>
+
+  {% assign posts_by_year = site.posts | group_by_exp: "post", "post.date | date: '%Y'" %}
+  
+  {% for year in posts_by_year %}
+  <h2 class="archive-year">{{ year.name }}</h2>
+  <ul class="archive-list">
+    {% for post in year.items %}
+    <li class="archive-item">
+      <span class="archive-date">{{ post.date | date: "%m. %d" }}</span>
+      <a href="{{ post.url | relative_url }}" class="archive-title">{{ post.title }}</a>
+      <span class="archive-category">{{ post.category }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+  {% endfor %}
+</section>

@@ -1,0 +1,22 @@
+# 카테고리 정의
+# 글에서 category: tech 로 참조
+
+tech:
+  name: Tech
+  description: 기술 관련 글
+  color: "#3b82f6"
+
+projects:
+  name: Projects
+  description: 프로젝트 회고 및 기록
+  color: "#10b981"
+
+til:
+  name: TIL
+  description: Today I Learned
+  color: "#f59e0b"
+
+life:
+  name: Life
+  description: 일상 이야기
+  color: "#8b5cf6"

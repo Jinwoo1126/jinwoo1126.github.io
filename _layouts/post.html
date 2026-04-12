@@ -1,0 +1,232 @@
+---
+layout: default
+---
+
+{% assign author = site.data.authors[page.author] | default: site.data.authors.default %}
+
+<!-- Article Hero -->
+<section class="article-hero">
+  <div class="hero-image-wrapper">
+    {% if page.image %}
+    <img src="{{ page.image }}" alt="{{ page.title }}" class="hero-image">
+    {% else %}
+    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&q=80" alt="{{ page.title }}" class="hero-image">
+    {% endif %}
+  </div>
+
+  <div class="hero-content">
+    <span class="category">{{ page.category | default: 'Tech' }}</span>
+    <h1 class="hero-title">{{ page.title }}</h1>
+    
+    <div class="post-meta">
+      <span class="hero-date">{{ page.date | date: "%Y. %m. %d" }}</span>
+      
+      {% if site.features.reading_time %}
+      <span class="post-meta-divider"></span>
+      <span class="reading-time">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        {% assign words = content | number_of_words %}
+        {% assign minutes = words | divided_by: 200 %}
+        {% if minutes < 1 %}1{% else %}{{ minutes }}{% endif %}분
+      </span>
+      {% endif %}
+    </div>
+
+    <div class="author">
+      <img 
+        src="{{ author.avatar | default: '/assets/images/profile.jpg' }}" 
+        alt="{{ author.name }}" 
+        class="author-avatar"
+        onerror="this.src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop'"
+      >
+      <span class="author-name">{{ author.name }}</span>
+    </div>
+  </div>
+</section>
+
+<!-- Content -->
+<div class="content-wrapper">
+  
+  <!-- TOC (데스크톱) -->
+  {% if site.features.toc and page.toc != false %}
+  <aside class="toc-wrapper" id="toc">
+    <div class="toc-title">목차</div>
+    <ul class="toc-list" id="tocList">
+      <!-- JS로 생성 -->
+    </ul>
+  </aside>
+  {% endif %}
+
+  <article class="article-body-section">
+    
+    <!-- 시리즈 표시 -->
+    {% if page.series %}
+    {% assign series_posts = site.posts | where: "series", page.series | sort: "date" %}
+    {% if series_posts.size > 1 %}
+    <div class="series-box">
+      <div class="series-title">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+        </svg>
+        {{ page.series }} 시리즈
+      </div>
+      <ol class="series-list">
+        {% for post in series_posts %}
+        <li {% if post.url == page.url %}class="current"{% endif %}>
+          {% if post.url == page.url %}
+            {{ post.title }}
+          {% else %}
+            <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ol>
+    </div>
+    {% endif %}
+    {% endif %}
+
+    <div class="article-body">
+      {{ content }}
+
+      {% if page.tags.size > 0 %}
+      <div class="tags">
+        {% for tag in page.tags %}
+        <a href="{{ '/tags/' | append: tag | relative_url }}" class="tag">#{{ tag }}</a>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <div class="author-box">
+        <img 
+          src="{{ author.avatar | default: '/assets/images/profile.jpg' }}" 
+          alt="{{ author.name }}" 
+          class="author-box-avatar"
+          onerror="this.src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop'"
+        >
+        <div class="author-box-info">
+          <h4>{{ author.name }}</h4>
+          <p>{{ author.bio | default: site.description }}</p>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- 관련 글 -->
+  {% if site.features.related_posts %}
+  {% assign related_posts = site.posts | where_exp: "post", "post.url != page.url" | where: "category", page.category | limit: 3 %}
+  {% if related_posts.size > 0 %}
+  <section class="related-section">
+    <div class="related-inner">
+      <h2 class="section-title">관련 글</h2>
+      <div class="posts-grid">
+        {% for post in related_posts %}
+        {% include components/post-card.html post=post %}
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+  {% endif %}
+
+  <!-- 댓글 -->
+  {% if site.features.comments and page.comments != false %}
+  <section class="comments-section">
+    <h3 class="comments-title">댓글</h3>
+    {% include components/giscus.html %}
+  </section>
+  {% endif %}
+</div>
+
+<script>
+  // Hero scroll effect
+  const heroContent = document.querySelector('.hero-content');
+  const heroImage = document.querySelector('.hero-image-wrapper');
+  
+  let heroTicking = false;
+  let heroLastScrollY = 0;
+  
+  function updateHeroOnScroll() {
+    const scrollY = heroLastScrollY;
+    const windowHeight = window.innerHeight;
+    
+    const fadeEnd = windowHeight * 0.7;
+    const fadeProgress = Math.min(Math.max(scrollY / fadeEnd, 0), 1);
+    const easeOutCubic = 1 - Math.pow(1 - fadeProgress, 3);
+    
+    if (heroContent) {
+      heroContent.style.transform = `translate3d(0, ${scrollY * 0.4}px, 0)`;
+      heroContent.style.opacity = 1 - easeOutCubic;
+    }
+    
+    if (heroImage) {
+      heroImage.style.opacity = 1 - (easeOutCubic * 0.6);
+    }
+    
+    heroTicking = false;
+  }
+  
+  function onHeroScroll() {
+    heroLastScrollY = window.scrollY;
+    if (!heroTicking) {
+      requestAnimationFrame(updateHeroOnScroll);
+      heroTicking = true;
+    }
+  }
+  
+  window.addEventListener('scroll', onHeroScroll, { passive: true });
+
+  // TOC 생성
+  {% if site.features.toc and page.toc != false %}
+  (function() {
+    const article = document.querySelector('.article-body');
+    const tocList = document.getElementById('tocList');
+    const headings = article.querySelectorAll('h2, h3');
+    
+    if (headings.length > 0 && tocList) {
+      headings.forEach((heading, index) => {
+        // ID 추가
+        if (!heading.id) {
+          heading.id = 'heading-' + index;
+        }
+        
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = '#' + heading.id;
+        a.textContent = heading.textContent;
+        
+        if (heading.tagName === 'H3') {
+          li.classList.add('toc-h3');
+        }
+        
+        li.appendChild(a);
+        tocList.appendChild(li);
+      });
+      
+      // 스크롤 시 현재 위치 표시
+      const tocLinks = tocList.querySelectorAll('a');
+      
+      function updateTocActive() {
+        let current = '';
+        headings.forEach(heading => {
+          const rect = heading.getBoundingClientRect();
+          if (rect.top <= 150) {
+            current = heading.id;
+          }
+        });
+        
+        tocLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+          }
+        });
+      }
+      
+      window.addEventListener('scroll', updateTocActive, { passive: true });
+      updateTocActive();
+    }
+  })();
+  {% endif %}
+</script>
