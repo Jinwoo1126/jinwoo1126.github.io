@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "_posts/2026-04-12-skills.md",
+                "file": "_posts/2024-01-05-side-project.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2026-04-12-skills"
+              "title": "2024-01-05-side-project"
             }
           }
         ]
@@ -183,8 +183,14 @@
   },
   "active": "6f3c57110b824bbc",
   "lastOpenFiles": [
-    "pages/about.md",
+    "assets/images/posts/Pasted image 20260413220148.png",
+    "_posts/2026-04-13-figma_mcp.md",
+    "_scripts/obsidian-compat.py",
+    "_scripts/obsidian-compat 2.py",
+    "_scripts",
+    "assets/images/posts/Gemini_Generated_Image_nqnxtsnqnxtsnqnx.png",
     "_posts/2026-04-12-skills.md",
+    "pages/about.md",
     "_posts/Gemini_Generated_Image_nqnxtsnqnxtsnqnx.png",
     "_drafts/docker-basics.md",
     "_posts/2024-01-02-typescript-generics.md",
