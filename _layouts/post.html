@@ -8,7 +8,7 @@ layout: default
 <section class="article-hero">
   <div class="hero-image-wrapper">
     {% if page.image %}
-    <img src="{{ page.image }}" alt="{{ page.title }}" class="hero-image">
+    <img src="{{ page.image | relative_url }}" alt="{{ page.title }}" class="hero-image">
     {% else %}
     <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&q=80" alt="{{ page.title }}" class="hero-image">
     {% endif %}
