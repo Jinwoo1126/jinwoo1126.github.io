@@ -76,7 +76,103 @@ Claude Code를 사용하며 알아 두면 좋을 팁
 > 최대한 초기 계획부터 잘 다듬어야 실제 구현이 좋기 때문에 최대한 critic하게 작업을 수행하는 것을 권장
 
 
-### TBD
+### 커스텀 슬래시 커맨드
+
+`/<prefix>:<command-name> [arguments]`
+
+`<prefix>` : 커스텀 커맨드의 스코프 (프로젝트 단위는 project, 사용자 단위는 user)
+`<command-name>` : 커맨드가 정의된 마크다운 파일
+`[arguments]` : 커맨드에 제공할 매개변수
+
+
+**프로젝트 커스텀 슬래시 커맨드 : (`.claude/commands/`)**
+ : 프로젝트 단위로 적용. 
+ - 프로젝트에 관련 있는 CI 실행, PRD 작성, 테스트 실행
+ - ex) `/create-pr` 커맨드의 커스텀 커맨드 정의 파일 `.claude/commands/create-pr.md` 
+
+**사용자 커스텀 슬래시 커맨드 : (`~/.claude/commands/`)**
+ : 개인적으로 자주 사용하는 커맨드. 
+ - 여러 프로젝트에 걸쳐서 사용하게 되는 커맨드
+ - ex) `/analyze-code` 커맨드의 커스텀 커맨드 정의 파일 `~/.claude/commands/analyze-code.md` 
+
+**네임스페이싱**
+- 프로젝트 네임스페이스 위치 : `.claude/commands/<namespace>:<command>.md`
+- 사용자 네임스페이스 위치 : `~/.claude/commands/<namespace>:<command>.md`
+- 사용자 네임스페이싱 prefix : `/<namespace>:<command>`
+- 프로젝트 네임스페이싱 prefix : `/<namespace>:<command>`
+
+
+### MCP
+
+외부 도구 및 데이터 소스에 접근할 수 있도록 설계된 표준화된 프로토콜
+
+**MCP 추가**
+
+> 커맨드
+```shell
+claude mcp add <name> <command> [args...]
+
+## example
+claude mcp add context7 -- npx -y @upstash/context7-mcp
+```
+
+>.mcp.json
+```json
+{
+	"mcpServers": {
+		"context7" : {
+			"type": "stdio",
+			"command": "npx",
+			"args" : [
+				"-y",
+				"@upstash/context7-mcp"
+			],
+			"env": {}
+		}
+	}
+}
+```
+
+*추가적으로 SSE, HTTP 옵션도 있음*
+
+
+### PRD와 실행 계획
+
+**PRD** (UX 준수)
+- 어떤 사용자를 위해 만드는가?
+- 어떤 문제를 해결해주는가?
+- 비즈니스 측면에서 어떤 이득이 있는가?
+- 어떤 기느오가 경험을 제공해야 하는가?
+- 사용자는 어떤 경험을 하게 되는가?
+- 우리는 무엇(what), 왜(why) 만드는가?
+
+> **PRD 작성법**
+> 	1. **문제 정의** : 구체적인 수치와 정확한 정의에 기반한 문제 정의
+> 	2. **타깃 사용자 및 사례**
+> 	3. **제안 해결책**
+> 	4. **목표 및 성공 지표**
+> 	5. **경쟁사 분석**
+> 	6. **MVP 요구사항**
+
+
+**실행 계획** (개발 의도)
+- 어떤 기술 스택을 사용할 것인가?
+- 아키텍처를 어떻게 구성할 것인가?
+- 데이터를 어떤 모델로 저장할 것인가?
+- 어떤 함수와 클래스를 작성할 것인가?
+- 어떤 작업을 먼저 수행할 것인가?
+
+> **실행계획 작성법**
+> 	1. **작업 분해**
+> 	2. **기술 명세**
+> 	3. **의존성 파악**
+> 	4. **산출물 및 일정**
+
+*실행 계획 작성후에는 체크 박스를 사용하여 진행 사항 관리를 하는 것이 필요*
+
+
+### 병렬 실행
+
 
 
 ## 참고
@@ -88,3 +184,17 @@ Claude Code를 사용하며 알아 두면 좋을 팁
 	- `/memory` : 메모리 관리
 	- `/mcp` : mcp 관리
 - **CoT 유도하기** : Think, Think hard, Think harder, Ultra think 등의 키워드들을 통해서 더 사고 할 수 있도록 유도할 수 있음
+ 
+ 
+### 유용한 MCP 리스트
+
+| MCP                        | 기능                             |
+| -------------------------- | ------------------------------ |
+| Postgresql, Mongodb, Mysql | DB 접근                          |
+| Playwright, Puppeteer      | MCP로 브라우저 조종, E2E 테스트나 크롤링에 유용 |
+| context7                   | 각종 개발 도구의 가장 최근 공식 문서          |
+| MagicUI                    | 21st Dev의 UI 컴포넌트 사용           |
+| Github                     | 깃허브                            |
+| TossPayments, evenueCat    | 결제 관련 기능 구현                    |
+| supabase                   | Supabase에 연결                   |
+
